@@ -3,7 +3,7 @@ import Nav from './Nav.jsx'
 import { useSelector } from 'react-redux'
 import { FaPen, FaUtensils } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
-import OwnerItemCard from './ownerItemCard.jsx'
+import OwnerItemCard from './OwnerItemCard.jsx'
 
 const OwnerDashboard = () => {
   const { myShopData } = useSelector(state => state.owner)
