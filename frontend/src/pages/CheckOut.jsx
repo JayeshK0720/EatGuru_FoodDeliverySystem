@@ -3,9 +3,10 @@ import { IoIosArrowRoundBack } from 'react-icons/io'
 import { IoLocationSharp } from "react-icons/io5"
 import { IoSearchOutline } from 'react-icons/io5'
 import { TbCurrentLocation } from 'react-icons/tb'
-import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
-import { useDispatch, useSelector } from 'react-redux'
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { useDispatch, useSelector } from 'react-redux'
 import { setAddress, setLocation } from '../redux/mapSlice'
 import axios from 'axios'
 import { MdDeliveryDining } from 'react-icons/md';
@@ -14,6 +15,16 @@ import { FaCreditCard } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { serverUrl } from '../App'
 import { addMyOrder } from '../redux/userSlice'
+
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+L.Icon.Default.mergeOptions({
+  iconUrl: markerIcon,
+  iconRetinaUrl: markerIcon2x,
+  shadowUrl: markerShadow,
+});
 
 function RecenterMap({ location }) {
     if (location.lat && location.lon) {
@@ -150,20 +161,25 @@ function CheckOut() {
                             /></button>
                     </div>
                     <div className='rounded-xl border overflow-hidden'>
-                        <div className='h-64 w-full flex items-center justify-center'>
-                            <MapContainer className={"w-full h-full"}
-                                center={[location?.lat, location?.lon]}
-                                zoom={16}>
+                          <div className='h-64 w-full flex items-center justify-center'>
+                            {location?.lat && location?.lon && (
+                              <MapContainer
+                                className='w-full h-full'
+                                center={[location.lat, location.lon]}
+                                zoom={16}
+                              >
                                 <TileLayer
-                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 />
-                                <RecenterMap location={location} />
-                                <Marker position={[location?.lat, location?.lon]}
-                                    draggable eventHandlers={{ dragend: onDragEnd }}
+                    
+                                <Marker
+                                  position={[location.lat, location.lon]}
+                                  draggable
+                                  eventHandlers={{ dragend: onDragEnd }}
                                 />
-                            </MapContainer>
-                        </div>
+                              </MapContainer>
+                            )}
+                          </div>
                     </div>
                 </section>
 
